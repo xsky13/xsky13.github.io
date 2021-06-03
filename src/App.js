@@ -1,10 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Header } from './Components/Header'
 import './App.css';
 import { btnPrimary, btnSecondary, input } from './elementClasses';
 import { isMobile } from 'react-device-detect';
+import emailjs from 'emailjs-com';
 
 const App = () => {
+	const [sent, setSent] = useState('');
+
+	const emailMessage = e => {
+		e.preventDefault();
+		setSent('');
+		emailjs.sendForm('service_fs66188', 'template_0lejvam', e.target, 'user_7u5P5wDuGTdmhA2tXXVeI').then((result) => {
+			setSent('Succesfully sent message!');
+			setTimeout(() => {
+				setSent('');
+			}, 3000);
+			e.target.reset();
+		}, (error) => {
+			setSent(error.text);
+			setTimeout(() => {
+				setSent('');
+			}, 3000);
+			e.target.reset();
+		});
+	}
+
 	return (
 		<>
 			<Header />
@@ -89,16 +110,21 @@ const App = () => {
 			<div id="contact" className="flex items-center pt-32 md:pt-72 lg:pt-72 pb-10 pb-60">
 				<div className="block mx-auto w-full lg:w-8/12">
 					<h1 className="text-5xl md:text-6xl lg:text-6xl text-center">Contact Me</h1>
-					<form action="" className="xsm:w-64 sml:w-80 sm:w-96 block m-auto md:w-9/12">
+					<form action="" onSubmit={emailMessage} className="xsm:w-64 sml:w-80 sm:w-96 block m-auto md:w-9/12">
 						<div className="form-group">
+							<label htmlFor="name" className="text-lg text-gray-600">Your Name</label><br />
+							<input type="text" id="name" name="name" className={input + ' w-full'} />
+						</div>
+						<div className="form-group mt-3">
 							<label htmlFor="email" className="text-lg text-gray-600">Your Email</label><br />
-							<input type="text" id="email" className={input + ' w-full'} />
+							<input type="text" id="email" name="email" className={input + ' w-full'} />
 						</div>
 						<div className="form-group mt-3">
 							<label htmlFor="message" className="text-lg text-gray-600">Your Message</label><br />
-							<textarea type="text" id="message" rows="7" className={input + ' w-full'}></textarea>
+							<textarea type="text" id="message" name="message" rows="7" className={input + ' w-full'}></textarea>
 						</div>
 						<button className={btnPrimary + ' mt-3 w-full lg:w-auto'}>Send Message</button>
+						<p className="text-lg text-gray-600 text-center">{sent}</p>
 					</form>
 				</div>
 			</div>
