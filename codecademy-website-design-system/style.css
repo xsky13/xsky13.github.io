@@ -1,0 +1,97 @@
+body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+
+/* STYLES FOR WEBSITE */
+
+.container {
+    padding: 10px 15%;
+}
+
+.section {
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    padding: 10px 50px 50px 50px;
+    border-radius: 3px;
+    margin-bottom: 40px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.row .col {
+    padding: 10px 80px;
+    margin: 10px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+@media screen and (max-width: 620px) {
+    .container {
+        padding: 10px 10%;
+    }
+    .row {
+        justify-content: center;
+    }
+    .section h2 {
+        text-align: center;
+    }
+}
+
+
+/* TYPOGRAPHY */
+
+h1 {
+    font-size: 3em;
+}
+
+h2 {
+    font-size: 2.5em;
+}
+
+h3 {
+    font-size: 2em;
+}
+
+p {
+    font-family: 'Roboto', sans-serif !important;
+    font-size: 17px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.abril {
+    font-family: 'Abril Fatface', cursive !important;
+}
+
+.roboto {
+    font-family: 'Roboto', sans-serif !important;
+}
+
+.strong {
+    font-weight: bold;
+}
+
+.italic {
+    font-style: italic;
+}
+
+
+/* COLORS */
+
+.bg-blue {
+    background-color: rgb(0, 100, 251);
+}
+
+.bg-red {
+    background-color: rgb(251, 0, 96);
+}
+
+.bg-teal {
+    background-color: rgb(0, 128, 128);
+}
