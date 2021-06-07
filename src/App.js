@@ -4,26 +4,46 @@ import './App.css';
 import { btnPrimary, btnSecondary, input } from './elementClasses';
 import { isMobile } from 'react-device-detect';
 import emailjs from 'emailjs-com';
+import validator from 'validator';
 
 const App = () => {
-	const [sent, setSent] = useState('');
+	const [name, setName] = useState('');
+	const [email, setEmail] = useState('');
+	const [message, setMessage] = useState('');
+
+	const [error, setError] = useState('');
+	const [errorColor, setErrorColor] = useState('red');
 
 	const emailMessage = e => {
 		e.preventDefault();
-		setSent('');
-		emailjs.sendForm('service_fs66188', 'template_0lejvam', e.target, 'user_7u5P5wDuGTdmhA2tXXVeI').then((result) => {
-			setSent('Succesfully sent message!');
-			setTimeout(() => {
-				setSent('');
-			}, 3000);
-			e.target.reset();
-		}, (error) => {
-			setSent(error.text);
-			setTimeout(() => {
-				setSent('');
-			}, 3000);
-			e.target.reset();
-		});
+		setError('');
+
+		if (name.length < 2) {
+			setErrorColor('red');
+			setError('Your name must be at least 3 characters long');
+		} else if (!validator.isEmail(email)) {
+			setErrorColor('red');
+			setError('Your email is invalid');
+		} else if (message.length < 4) {
+			setErrorColor('red');
+			setError('Your message must be at least 5 characters long');
+		} else {
+			emailjs.sendForm('service_fs66188', 'template_0lejvam', e.target, 'user_7u5P5wDuGTdmhA2tXXVeI').then(() => {
+				setErrorColor('green');
+				setError('Succesfully sent message!');
+				setTimeout(() => {
+					setError('');
+				}, 3000);
+				e.target.reset();
+			}, (error) => {
+				setErrorColor('red');
+				setError(error.text);
+				setTimeout(() => {
+					setError('');
+				}, 3000);
+				e.target.reset();
+			});
+		}
 	}
 
 	return (
@@ -113,18 +133,22 @@ const App = () => {
 					<form action="" onSubmit={emailMessage} className="xsm:w-64 sml:w-80 sm:w-96 block m-auto md:w-9/12">
 						<div className="form-group">
 							<label htmlFor="name" className="text-lg text-gray-600">Your Name</label><br />
-							<input type="text" id="name" name="name" className={input + ' w-full'} />
+							<input type="text" id="name" name="name" className={input + ' w-full'} onChange={e => setName(e.target.value)} />
 						</div>
 						<div className="form-group mt-3">
 							<label htmlFor="email" className="text-lg text-gray-600">Your Email</label><br />
-							<input type="text" id="email" name="email" className={input + ' w-full'} />
+							<input type="text" id="email" name="email" className={input + ' w-full'} onChange={e => setEmail(e.target.value)} />
+						</div>
+						<div className="form-group mt-3">
+							<label htmlFor="subject" className="text-lg text-gray-600">Subject</label><br />
+							<input type="text" id="subject" name="subject" className={input + ' w-full'} />
 						</div>
 						<div className="form-group mt-3">
 							<label htmlFor="message" className="text-lg text-gray-600">Your Message</label><br />
-							<textarea type="text" id="message" name="message" rows="7" className={input + ' w-full'}></textarea>
+							<textarea type="text" id="message" name="message" rows="7" className={input + ' w-full'} onChange={e => setMessage(e.target.value)} ></textarea>
 						</div>
 						<button className={btnPrimary + ' mt-3 w-full lg:w-auto'}>Send Message</button>
-						<p className="text-lg text-gray-600 text-center">{sent}</p>
+						<p className={`text-lg text-${errorColor}-600 text-center`}>{error}</p>
 					</form>
 				</div>
 			</div>
